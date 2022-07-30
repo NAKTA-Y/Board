@@ -63,4 +63,17 @@ class BoardServiceTest {
         boardService.removeWithReplies(bno);
 
     }
+
+    @Test
+    @Rollback(value = false)
+    public void testModify() {
+
+        BoardDTO boardDTO = BoardDTO.builder()
+                .bno(2L)
+                .title("Change Title")
+                .content("Change Content")
+                .build();
+
+        boardService.modify(boardDTO);
+    }
 }
