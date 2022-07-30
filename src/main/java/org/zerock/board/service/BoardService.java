@@ -1,12 +1,17 @@
 package org.zerock.board.service;
 
+import org.springframework.data.domain.PageRequest;
 import org.zerock.board.dto.BoardDTO;
+import org.zerock.board.dto.PageRequestDTO;
+import org.zerock.board.dto.PageResultDTO;
 import org.zerock.board.entity.Board;
 import org.zerock.board.entity.Member;
 
 public interface BoardService {
 
     Long register(BoardDTO dto);
+
+    PageResultDTO<BoardDTO, Object[]> getList(PageRequestDTO pageRequestDTO);
 
     default Board dtoToEntity(BoardDTO dto) {
 
@@ -22,5 +27,22 @@ public interface BoardService {
                 .build();
 
         return board;
+    }
+
+    default BoardDTO entityToDTO(Board board, Member member, Long replyCount) {
+
+        BoardDTO boardDTO = BoardDTO.builder()
+                .bno(board.getBno())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .regDate(board.getRegDate())
+                .modDate(board.getModDate())
+                .writerId(member.getId())
+                .writerEmail(member.getEmail())
+                .writerName(member.getName())
+                .replyCount(replyCount.intValue()) // int로 형변환
+                .build();
+
+        return boardDTO;
     }
 }
