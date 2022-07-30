@@ -16,7 +16,7 @@ import org.zerock.board.service.BoardService;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/board")
+@RequestMapping("/board/")
 @Log4j2
 public class BoardController {
 
@@ -54,17 +54,44 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    @GetMapping("/read")
-    public String read(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Long bno, Model model) {
+    @GetMapping({"/read", "/modify"})
+    public void read(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Long bno, Model model) {
 
         log.info("BNO: " + bno);
 
         BoardDTO boardDTO = boardService.get(bno);
 
-        log.info("read........." + boardDTO);
+        log.info(boardDTO);
 
         model.addAttribute("dto", boardDTO);
+    }
 
-        return "/board/read";
+    @PostMapping("/modify")
+    public String modify(BoardDTO dto, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
+
+        log.info("post modify..........");
+        log.info("DTO: " + dto);
+
+        boardService.modify(dto);
+
+        redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
+        redirectAttributes.addAttribute("type", pageRequestDTO.getType());
+        redirectAttributes.addAttribute("keyword", pageRequestDTO.getKeyword());
+
+        redirectAttributes.addAttribute("bno", dto.getBno());
+
+        return "redirect:/board/read";
+    }
+
+    @PostMapping("/remove")
+    public String remove(Long bno, RedirectAttributes redirectAttributes) {
+
+        log.info("BNO: " + bno);
+
+        boardService.removeWithReplies(bno);
+
+        redirectAttributes.addFlashAttribute("msg", bno);
+
+        return "redirect:/board/list";
     }
 }
