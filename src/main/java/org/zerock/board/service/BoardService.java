@@ -23,6 +23,7 @@ public interface BoardService {
 
         Member member = Member.builder()
                 .id(dto.getWriterId())
+                .name(dto.getWriterName())
                 .build();
 
         Board board = Board.builder()
