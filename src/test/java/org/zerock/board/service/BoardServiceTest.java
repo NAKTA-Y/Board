@@ -41,4 +41,14 @@ class BoardServiceTest {
 
     }
 
+    @Test
+    public void testView() {
+
+        Long bno = 100L;
+
+        BoardDTO boardDTO = boardService.get(bno);
+
+        System.out.println(boardDTO);
+    }
+
 }
