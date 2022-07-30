@@ -64,7 +64,7 @@ class BoardRepositoryTest {
     @Rollback(value = false)
     public void testGetBoardWithReply() {
 
-        List<Object[]> result = boardRepository.getBoardWithReplay(100L);
+        List<Object[]> result = boardRepository.getBoardWithReply(100L);
 
         for (Object[] arr : result) {
             System.out.println(Arrays.toString(arr));
