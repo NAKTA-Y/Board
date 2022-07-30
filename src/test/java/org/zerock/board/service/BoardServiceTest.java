@@ -3,6 +3,8 @@ package org.zerock.board.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerock.board.dto.BoardDTO;
 import org.zerock.board.dto.PageRequestDTO;
 import org.zerock.board.dto.PageResultDTO;
@@ -10,6 +12,7 @@ import org.zerock.board.dto.PageResultDTO;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class BoardServiceTest {
 
     @Autowired BoardService boardService;
@@ -41,4 +44,36 @@ class BoardServiceTest {
 
     }
 
+    @Test
+    public void testView() {
+
+        Long bno = 100L;
+
+        BoardDTO boardDTO = boardService.get(bno);
+
+        System.out.println(boardDTO);
+    }
+
+    @Test
+    @Rollback(value = false)
+    public void testDelete() {
+
+        Long bno = 100L;
+
+        boardService.removeWithReplies(bno);
+
+    }
+
+    @Test
+    @Rollback(value = false)
+    public void testModify() {
+
+        BoardDTO boardDTO = BoardDTO.builder()
+                .bno(2L)
+                .title("Change Title")
+                .content("Change Content")
+                .build();
+
+        boardService.modify(boardDTO);
+    }
 }

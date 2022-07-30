@@ -13,6 +13,12 @@ public interface BoardService {
 
     PageResultDTO<BoardDTO, Object[]> getList(PageRequestDTO pageRequestDTO);
 
+    BoardDTO get(Long bno);
+
+    void removeWithReplies(Long bno);
+
+    void modify(BoardDTO boardDTO);
+
     default Board dtoToEntity(BoardDTO dto) {
 
         Member member = Member.builder()
