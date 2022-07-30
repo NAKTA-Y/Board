@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -15,7 +16,7 @@ import org.zerock.board.service.BoardService;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/board/")
+@RequestMapping("/board")
 @Log4j2
 public class BoardController {
 
@@ -51,5 +52,19 @@ public class BoardController {
         redirectAttributes.addFlashAttribute("msg", bno);
 
         return "redirect:/board/list";
+    }
+
+    @GetMapping("/read")
+    public String read(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Long bno, Model model) {
+
+        log.info("BNO: " + bno);
+
+        BoardDTO boardDTO = boardService.get(bno);
+
+        log.info("read........." + boardDTO);
+
+        model.addAttribute("dto", boardDTO);
+
+        return "/board/read";
     }
 }
