@@ -33,6 +33,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
+                <th scope="col">Reply</th>
                 <th scope="col">Writer</th>
                 <th scope="col">Regdate</th>
             </tr>
@@ -50,7 +51,7 @@
                     </a>
                 </td>
                 <td>[[${dto.replyCount}]]</td>
-                <td>[[${dto.writerName}]]</td>
+                <td>[[${dto.writerName}]] </td>
                 <td>[[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</td>
             </tr>
 
