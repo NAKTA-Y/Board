@@ -3,6 +3,8 @@ package org.zerock.board.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerock.board.entity.Board;
 import org.zerock.board.entity.Member;
 import org.zerock.board.entity.Reply;
@@ -12,6 +14,7 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class ReplyRepositoryTest {
 
     @Autowired ReplyRepository replyRepository;
@@ -19,6 +22,7 @@ class ReplyRepositoryTest {
     @Autowired MemberRepository memberRepository;
 
     @Test
+    @Rollback(value = false)
     public void insertReplyTest() {
 
         IntStream.rangeClosed(1, 100).forEach(i -> {
@@ -34,7 +38,7 @@ class ReplyRepositoryTest {
             Board board = Board.builder()
                     .title("Title..." + i)
                     .content("Content..." + i)
-                    .member(member)
+                    .writer(member)
                     .build();
 
             boardRepository.save(board);
